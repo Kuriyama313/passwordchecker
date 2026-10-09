@@ -1,0 +1,79 @@
+<!doctype html>
+<html lang="vi">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<meta name="color-scheme" content="dark">
+<title>PasswordCheck — Kiểm tra độ mạnh mật khẩu</title>
+<style>
+:root{--bg:#080d19;--panel:#10182b;--panel2:#141f38;--border:#243252;--text:#f3f6ff;--muted:#a9b8d8;--blue:#4b82ff;--green:#20df91;--yellow:#ffd166;--red:#ff6379}
+*{box-sizing:border-box}body{margin:0;background:radial-gradient(ellipse at 50% 0,#17264b 0,transparent 42%),var(--bg);font:16px/1.55 system-ui,-apple-system,Segoe UI,Roboto,sans-serif;color:var(--text)}
+header{border-bottom:1px solid #1c2943;background:#090f1dce}.nav{max-width:1180px;margin:auto;padding:16px 22px;display:flex;align-items:center;gap:12px;font-weight:750;font-size:20px}.shield{display:grid;place-items:center;width:38px;height:38px;border-radius:12px;background:linear-gradient(135deg,#4f7cff,#7858ed);font-size:21px}.brand span{color:#6d96ff}
+main{max-width:1100px;margin:0 auto;padding:42px 20px 30px}.hero{text-align:center;margin-bottom:28px}.hero .lock{font-size:46px;filter:drop-shadow(0 0 14px #4d7cff66)}h1{font-size:clamp(28px,4vw,42px);line-height:1.15;margin:8px 0 12px;letter-spacing:-.7px}.hero p{color:var(--muted);margin:5px 0}.privacy{font-size:14px;color:#85a7ff!important}
+.layout{display:grid;grid-template-columns:minmax(0,1.65fr) minmax(280px,1fr);gap:20px}.panel{background:linear-gradient(150deg,#111a2e,#0c1323);border:1px solid var(--border);border-radius:16px;padding:22px;box-shadow:0 16px 50px #0002}.label{display:block;font-weight:700;margin-bottom:8px}.input-wrap{display:flex;gap:8px;align-items:center;border:1px solid #477cff;border-radius:10px;padding:5px 8px;background:#0a1223;box-shadow:0 0 0 2px #477cff12}.input-wrap:focus-within{box-shadow:0 0 0 3px #477cff30}.input-wrap input{width:100%;min-width:0;background:transparent;color:var(--text);border:0;outline:0;padding:10px 6px;font:inherit}.iconbtn{border:0;border-radius:8px;background:#1b2945;color:#dce7ff;cursor:pointer;padding:9px 11px;font-size:16px}.iconbtn:hover{background:#293c63}
+.result{margin-top:20px;padding:22px;border:1px solid #17694d;border-radius:12px;background:linear-gradient(110deg,#0b2925,#0c211f);display:flex;align-items:center;gap:20px}.score-ring{flex:none;width:108px;height:108px;border-radius:50%;display:grid;place-items:center;background:conic-gradient(var(--green) var(--score,0%),#263b43 0);position:relative}.score-ring:before{content:"";position:absolute;inset:9px;border-radius:50%;background:#0b2422}.score-ring strong{position:relative;font-size:24px}.score-ring small{font-size:13px}.result-copy{flex:1;min-width:0}.strength{font-size:24px;font-weight:800;color:var(--green);margin:0 0 2px}.result-copy p{margin:0;color:#d5e7e5}.bars{display:flex;gap:5px;margin-top:15px}.bars i{height:8px;border-radius:20px;flex:1;background:#26374a}.bars i.on{background:var(--green)}
+h2{font-size:18px;margin:22px 0 12px}.checks{display:grid;gap:10px}.check{display:flex;align-items:center;gap:10px;padding:3px 0}.check .mark{width:23px;height:23px;display:grid;place-items:center;border-radius:50%;background:#283449;color:#9aabc7;font-size:13px;flex:none}.check.pass .mark{background:#0e704e;color:#fff}.check .name{flex:1}.check .status{font-size:14px;color:var(--muted);text-align:right}.check.pass .status{color:var(--green)}
+.note{margin-top:20px;padding:14px;border:1px solid #243252;border-radius:11px;color:var(--muted);font-size:14px}.note b{color:var(--text)}.tips h2{margin:0 0 18px;font-size:20px}.tip{display:grid;grid-template-columns:30px 1fr;gap:11px;margin:17px 0}.num{width:29px;height:29px;display:grid;place-items:center;border-radius:50%;background:#284b9c;color:white;font-weight:800}.tip b{display:block;margin:1px 0 3px}.tip p{color:var(--muted);font-size:14px;margin:0}.tip code{display:block;background:#17233d;border-radius:7px;padding:8px 10px;margin-top:8px;color:#dbe5ff;font-family:inherit;font-size:13px;overflow-wrap:anywhere}
+footer{text-align:center;color:#788bb1;font-size:13px;padding:25px 0 0}.hidden{display:none!important}
+@media(max-width:760px){main{padding:28px 14px}.layout{grid-template-columns:1fr}.panel{padding:17px}.result{gap:14px;padding:16px}.score-ring{width:88px;height:88px}.strength{font-size:21px}.status{max-width:45%}}
+@media(prefers-reduced-motion:no-preference){.panel{animation:up .35s ease both}@keyframes up{from{opacity:0;transform:translateY(7px)}to{opacity:1;transform:translateY(0)}}}
+</style>
+</head>
+<body>
+<header><div class="nav"><div class="shield" aria-hidden="true">🔒</div><div class="brand">Password<span>Check</span></div></div></header>
+<main>
+<section class="hero"><div class="lock" aria-hidden="true">🔐</div><h1>Kiểm tra độ mạnh mật khẩu</h1><p>Nhập mật khẩu để kiểm tra và nhận gợi ý cải thiện.</p><p class="privacy">🔒 Mật khẩu được kiểm tra ngay trên thiết bị, không gửi đi đâu cả.</p></section>
+<div class="layout">
+<section class="panel" aria-label="Công cụ kiểm tra mật khẩu">
+<label class="label" for="password">Nhập mật khẩu</label>
+<div class="input-wrap"><input id="password" type="password" autocomplete="off" autocapitalize="off" spellcheck="false" placeholder="Nhập mật khẩu thử nghiệm…" aria-describedby="privacyNote"><button class="iconbtn" id="toggle" type="button" aria-label="Hiện mật khẩu" title="Hiện/ẩn mật khẩu">👁</button><button class="iconbtn" id="clear" type="button" aria-label="Xóa mật khẩu" title="Xóa">✕</button></div>
+<div class="result" id="result" aria-live="polite"><div class="score-ring" id="ring" style="--score:0%"><strong><span id="score">0</span><small>/100</small></strong></div><div class="result-copy"><div class="strength" id="strength">Chưa kiểm tra</div><p id="message">Nhập mật khẩu ở trên để bắt đầu.</p><div class="bars" id="bars" aria-hidden="true"><i></i><i></i><i></i><i></i><i></i><i></i></div></div></div>
+<h2>Chi tiết đánh giá</h2>
+<div class="checks" id="checks">
+<div class="check" data-test="length"><span class="mark">•</span><span class="name">Độ dài từ 12 ký tự</span><span class="status">Chưa đạt</span></div>
+<div class="check" data-test="lower"><span class="mark">•</span><span class="name">Có chữ thường</span><span class="status">Chưa đạt</span></div>
+<div class="check" data-test="upper"><span class="mark">•</span><span class="name">Có chữ hoa</span><span class="status">Chưa đạt</span></div>
+<div class="check" data-test="number"><span class="mark">•</span><span class="name">Có chữ số</span><span class="status">Chưa đạt</span></div>
+<div class="check" data-test="symbol"><span class="mark">•</span><span class="name">Có ký tự đặc biệt</span><span class="status">Chưa đạt</span></div>
+<div class="check" data-test="common"><span class="mark">•</span><span class="name">Không phải mật khẩu phổ biến</span><span class="status">Chưa đạt</span></div>
+</div>
+<div class="note" id="privacyNote"><b>🛡️ Lưu ý bảo mật</b><br>Đây là công cụ tham khảo đơn giản, không thể bảo đảm mật khẩu an toàn tuyệt đối. Không nhập mật khẩu thật đang dùng cho tài khoản quan trọng vào website thử nghiệm.</div>
+</section>
+<aside class="panel tips"><h2>💡 Mẹo tạo mật khẩu mạnh</h2>
+<div class="tip"><span class="num">1</span><div><b>Dùng mật khẩu dài</b><p>Ưu tiên từ 12–16 ký tự trở lên.</p><code>Ví dụ: một cụm từ dài, khó đoán</code></div></div>
+<div class="tip"><span class="num">2</span><div><b>Kết hợp nhiều loại ký tự</b><p>Dùng chữ hoa, chữ thường, số và ký tự đặc biệt khi phù hợp.</p><code>Ví dụ: A, a, 7, !, #</code></div></div>
+<div class="tip"><span class="num">3</span><div><b>Tránh thông tin cá nhân</b><p>Không dùng tên, ngày sinh hay số điện thoại.</p></div></div>
+<div class="tip"><span class="num">4</span><div><b>Tránh mật khẩu phổ biến</b><p>Không dùng các chuỗi dễ đoán như “123456” hay “password”.</p></div></div>
+<div class="tip"><span class="num">5</span><div><b>Mỗi tài khoản một mật khẩu</b><p>Dùng trình quản lý mật khẩu để tạo và lưu mật khẩu riêng biệt.</p></div></div>
+</aside>
+</div><footer>PasswordCheck · Công cụ minh họa chạy trực tiếp trên trình duyệt</footer>
+</main>
+<script>
+const $=id=>document.getElementById(id);
+const input=$('password'), common=new Set(['123456','123456789','12345678','password','qwerty','111111','123123','admin','letmein','iloveyou','abc123','password123']);
+function evaluate(p){
+ const tests={length:p.length>=12,lower:/[a-zà-ỹ]/.test(p),upper:/[A-Z]/.test(p),number:/\d/.test(p),symbol:/[^A-Za-z0-9À-ỹ\s]/.test(p),common:p.length>0&&!common.has(p.toLowerCase())};
+ let score=0;
+ if(p.length>=8)score+=15;if(p.length>=12)score+=20;if(p.length>=16)score+=10;
+ if(tests.lower)score+=10;if(tests.upper)score+=10;if(tests.number)score+=10;if(tests.symbol)score+=15;
+ if(p.length>0&&!common.has(p.toLowerCase()))score+=10;
+ if(/(.)\1{2,}/.test(p))score-=10;
+ if(/^(123|abc|qwe|password)/i.test(p))score-=15;
+ score=Math.max(0,Math.min(100,score));
+ let level='Rất yếu',color='var(--red)',msg='Mật khẩu này dễ đoán; hãy tăng độ dài và tính đa dạng.';
+ if(!p){level='Chưa kiểm tra';color='var(--muted)';msg='Nhập mật khẩu ở trên để bắt đầu.';score=0}
+ else if(score>=80){level='Rất mạnh';color='var(--green)';msg='Khá tốt theo các tiêu chí cơ bản. Hãy dùng riêng cho một tài khoản.'}
+ else if(score>=60){level='Mạnh';color='var(--green)';msg='Tương đối tốt; bạn có thể cải thiện thêm.'}
+ else if(score>=40){level='Trung bình';color='var(--yellow)';msg='Nên tăng độ dài và tránh các mẫu dễ đoán.'}
+ else if(score>=20){level='Yếu';color='var(--yellow)';msg='Mật khẩu còn dễ đoán; hãy thử một cụm từ dài hơn.'}
+ $('score').textContent=score;$('ring').style.setProperty('--score',score+'%');$('ring').style.background=`conic-gradient(${color} ${score}%,#263b43 0)`;$('strength').textContent=level;$('strength').style.color=color;$('message').textContent=msg;
+ [...$('bars').children].forEach((bar,i)=>{bar.classList.toggle('on',i<Math.ceil(score/100*6));bar.style.background=i<Math.ceil(score/100*6)?color:''});
+ document.querySelectorAll('[data-test]').forEach(el=>{const ok=tests[el.dataset.test];el.classList.toggle('pass',!!ok);el.querySelector('.mark').textContent=ok?'✓':'•';el.querySelector('.status').textContent=p?(ok?'Đạt':'Chưa đạt'):'Chưa kiểm tra'});
+}
+input.addEventListener('input',()=>evaluate(input.value));
+$('toggle').addEventListener('click',()=>{const show=input.type==='password';input.type=show?'text':'password';$('toggle').setAttribute('aria-label',show?'Ẩn mật khẩu':'Hiện mật khẩu');$('toggle').textContent=show?'🙈':'👁';input.focus()});
+$('clear').addEventListener('click',()=>{input.value='';evaluate('');input.focus()});
+evaluate('');
+</script>
+</body>
+</html>
